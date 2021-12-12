@@ -2,6 +2,7 @@ package com.example.artistgenresapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.content.res.AppCompatResources
 import com.example.artistgenresapp.adapter.FragmentAdapter
 import com.example.artistgenresapp.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -19,15 +20,15 @@ class MainActivity : AppCompatActivity() {
             when(position){
                 0 -> {
                     tab.text = "Rock"
-                    tab.icon = getDrawable(R.drawable.ic_rock_music)
+                    tab.icon = AppCompatResources.getDrawable(applicationContext,R.drawable.ic_rock_music)
                 }
                 1 -> {
                     tab.text = "Classic"
-                    tab.icon = getDrawable(R.drawable.ic_classic_music)
+                    tab.icon = AppCompatResources.getDrawable(applicationContext,R.drawable.ic_classic_music)
                 }
                 else -> {
                     tab.text = "Pop"
-                    tab.icon = getDrawable(R.drawable.ic_pop_music)
+                    tab.icon = AppCompatResources.getDrawable(applicationContext,R.drawable.ic_pop_music)
                 }
             }
         }.attach()
