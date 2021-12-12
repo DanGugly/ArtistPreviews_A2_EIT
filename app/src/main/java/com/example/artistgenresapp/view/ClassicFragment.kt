@@ -80,13 +80,13 @@ class ClassicFragment : Fragment(), IClassicView, PreviewClick {
     override fun classicSongsUpdated(classicSongs: List<Result>) {
         classicAdapter.updateClassic(classicSongs)
         dataLoaded = true
-        Toast.makeText(requireContext(), "Results: "+(classicSongs.size+1).toString(), Toast.LENGTH_LONG).show()
-        Log.d("CharactersFragment", classicSongs.toString())
+        Toast.makeText(requireContext(), "Results: "+(classicSongs.size).toString(), Toast.LENGTH_LONG).show()
+        Log.d("ClassicFragment", classicSongs.toString())
     }
 
     override fun onErrorData(error: Throwable) {
         Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_LONG).show()
-        Log.e("CharactersFragment", error.stackTraceToString())
+        Log.e("ClassicFragment", error.stackTraceToString())
     }
     companion object {
         private var dataLoaded : Boolean = false

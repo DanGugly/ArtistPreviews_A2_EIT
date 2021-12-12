@@ -70,13 +70,13 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
     override fun rockSongsUpdated(rockSongs: List<Result>) {
         rockAdapter.updateRock(rockSongs)
         dataLoaded = true
-        Toast.makeText(requireContext(), "Results: "+(rockSongs.size+1).toString(), Toast.LENGTH_LONG).show()
-        Log.d("CharactersFragment", rockSongs.toString())
+        Toast.makeText(requireContext(), "Results: "+(rockSongs.size).toString(), Toast.LENGTH_LONG).show()
+        Log.d("RockFragment", rockSongs.toString())
     }
 
     override fun onErrorData(error: Throwable) {
         Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_LONG).show()
-        Log.e("CharactersFragment", error.stackTraceToString())
+        Log.e("RockFragment", error.stackTraceToString())
     }
 
     override fun onDestroyView() {

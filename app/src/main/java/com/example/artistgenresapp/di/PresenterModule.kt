@@ -1,10 +1,7 @@
 package com.example.artistgenresapp.di
 
 import android.net.ConnectivityManager
-import com.example.artistgenresapp.presenter.ClassicPresenter
-import com.example.artistgenresapp.presenter.IClassicPresenter
-import com.example.artistgenresapp.presenter.IRockPresenter
-import com.example.artistgenresapp.presenter.RockPresenter
+import com.example.artistgenresapp.presenter.*
 import com.example.artistgenresapp.rest.SongApi
 import dagger.Module
 import dagger.Provides
@@ -24,5 +21,12 @@ class PresenterModule {
         connectivityManager: ConnectivityManager
     ) : IClassicPresenter {
         return ClassicPresenter(songApi,connectivityManager)
+    }
+    @Provides
+    fun providePopPresenter(
+        songApi: SongApi,
+        connectivityManager: ConnectivityManager
+    ) : IPopPresenter {
+        return PopPresenter(songApi,connectivityManager)
     }
 }
