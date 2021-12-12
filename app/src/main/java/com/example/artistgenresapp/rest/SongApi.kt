@@ -17,12 +17,12 @@ interface SongApi {
     ) : Single<Song>
 
     companion object{
-        private const val SONG_CLASSICK = "classick"
-        private const val SONG_POP = "pop"
-        private const val SONG_ROCK = "rock"
         private const val SONG_MEDIA = "music"
         private const val SONG_ENTITY = "song"
         private const val SONG_LIMIT = "50"
+        const val SONG_CLASSICK = "classick"
+        const val SONG_POP = "pop"
+        const val SONG_ROCK = "rock"
         const val END = "&amp;media=music&amp;entity=song&amp;limit=50"
         const val SEARCH = "search"
         const val BASE_URL = "https://itunes.apple.com/"
