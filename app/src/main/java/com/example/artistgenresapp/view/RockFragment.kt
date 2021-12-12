@@ -20,6 +20,9 @@ import com.example.artistgenresapp.presenter.IRockPresenter
 import com.example.artistgenresapp.presenter.IRockView
 import java.io.IOException
 import javax.inject.Inject
+import android.content.Intent
+import android.net.Uri
+
 
 class RockFragment : Fragment(), IRockView, PreviewClick {
 
@@ -77,12 +80,17 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
         presenter.destroyPresenter()
     }
 
-    override fun previewSong(previewUrl: String, songName : String) {
-        mediaPlayer = null
-        mediaPlayer?.release()
+    override fun previewSong(previewUrl: String, songName : String, mediaPlayer: MediaPlayer) {
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        intent.setDataAndType(Uri.parse(previewUrl), "audio/*")
+        Toast.makeText(requireContext(), "Now Playing: $songName", Toast.LENGTH_LONG).show()
+        startActivity(intent)
+        /*
             try {
-                mediaPlayer = MediaPlayer()
-                mediaPlayer?.apply {
+                mediaPlayer.stop()
+                mediaPlayer.release()
+                mediaPlayer.apply {
                     setDataSource(previewUrl)
                     setAudioAttributes(AudioAttributes.Builder()
                         .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -91,16 +99,14 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
                     )
                     prepare()
                 }
-                mediaPlayer?.start()
+                mediaPlayer.start()
                 Toast.makeText(requireContext(), "Now Playing: $songName", Toast.LENGTH_LONG).show()
             } catch (e: IOException) {
-                mediaPlayer = null
-                mediaPlayer?.release()
-            }
+                mediaPlayer.release()
+            } */
     }
 
     companion object {
-        var mediaPlayer : MediaPlayer? = null
         @JvmStatic
         fun newInstance() = RockFragment()
     }

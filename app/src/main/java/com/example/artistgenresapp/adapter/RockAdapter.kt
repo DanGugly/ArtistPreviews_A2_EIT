@@ -1,5 +1,6 @@
 package com.example.artistgenresapp.adapter
 
+import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,7 @@ class RockAdapter(
         holder.collectionName.text = song.collectionName
         getWeatherIcon(song.artworkUrl60, holder.artwork)
         holder.itemView.setOnClickListener{
-            previewClick.previewSong(song.previewUrl,song.trackName)
+            previewClick.previewSong(song.previewUrl,song.trackName, mediaPlayer)
         }
     }
 
@@ -54,6 +55,10 @@ class RockAdapter(
     }
 
     override fun getItemCount(): Int = rockList.size
+
+    companion object{
+        var mediaPlayer : MediaPlayer = MediaPlayer()
+    }
 
 }
 
