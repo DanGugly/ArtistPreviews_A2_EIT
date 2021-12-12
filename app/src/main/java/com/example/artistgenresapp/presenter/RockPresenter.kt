@@ -75,7 +75,8 @@ interface IRockPresenter{
 }
 
 interface IRockView{
-    fun rockSongsUpdated(rock_songs: List<Result>)
+
+    fun rockSongsUpdated(rockSongs: List<Result>)
 
     fun onErrorData(error: Throwable)
 }

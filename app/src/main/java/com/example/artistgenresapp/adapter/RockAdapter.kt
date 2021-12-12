@@ -8,9 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.artistgenresapp.R
 import com.example.artistgenresapp.model.Result
+import com.example.artistgenresapp.presenter.IRockPresenter
+import com.example.artistgenresapp.presenter.IRockView
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 class RockAdapter(
+    private val previewClick: PreviewClick,
     private val rockList: MutableList<Result> = mutableListOf()
 ) : RecyclerView.Adapter<RockAdapterViewHolder>(){
 
@@ -35,6 +39,9 @@ class RockAdapter(
         holder.trackPrice.text = song.trackPrice.toString()+" "+ song.currency
         holder.collectionName.text = song.collectionName
         getWeatherIcon(song.artworkUrl60, holder.artwork)
+        holder.itemView.setOnClickListener{
+            previewClick.previewSong(song.previewUrl,song.trackName)
+        }
     }
 
     private fun getWeatherIcon(path:String, artwork: ImageView){

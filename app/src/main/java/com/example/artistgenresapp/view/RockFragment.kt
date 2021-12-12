@@ -1,6 +1,8 @@
 package com.example.artistgenresapp.view
 
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,20 +12,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.artistgenresapp.SongsApplication
+import com.example.artistgenresapp.adapter.PreviewClick
 import com.example.artistgenresapp.adapter.RockAdapter
 import com.example.artistgenresapp.databinding.FragmentRockBinding
 import com.example.artistgenresapp.model.Result
 import com.example.artistgenresapp.presenter.IRockPresenter
 import com.example.artistgenresapp.presenter.IRockView
+import java.io.IOException
 import javax.inject.Inject
 
-class RockFragment : Fragment(), IRockView {
+class RockFragment : Fragment(), IRockView, PreviewClick {
 
     @Inject
     lateinit var presenter: IRockPresenter
 
     private lateinit var binding: FragmentRockBinding
-    private var rockAdapter = RockAdapter()
+    private var rockAdapter = RockAdapter(this)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -56,15 +60,10 @@ class RockFragment : Fragment(), IRockView {
         presenter.getRockSongsFromServer()
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = RockFragment()
-    }
-
-    override fun rockSongsUpdated(rock_songs: List<Result>) {
-        rockAdapter.updateRock(rock_songs)
-        Toast.makeText(requireContext(), rock_songs[0].artistName, Toast.LENGTH_LONG).show()
-        Log.d("CharactersFragment", rock_songs.toString())
+    override fun rockSongsUpdated(rockSongs: List<Result>) {
+        rockAdapter.updateRock(rockSongs)
+        Toast.makeText(requireContext(), rockSongs[0].artistName, Toast.LENGTH_LONG).show()
+        Log.d("CharactersFragment", rockSongs.toString())
     }
 
     override fun onErrorData(error: Throwable) {
@@ -76,5 +75,33 @@ class RockFragment : Fragment(), IRockView {
         super.onDestroyView()
         // this method will clear the disposable from the presenter
         presenter.destroyPresenter()
+    }
+
+    override fun previewSong(previewUrl: String, songName : String) {
+        mediaPlayer = null
+        mediaPlayer?.release()
+            try {
+                mediaPlayer = MediaPlayer()
+                mediaPlayer?.apply {
+                    setDataSource(previewUrl)
+                    setAudioAttributes(AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build()
+                    )
+                    prepare()
+                }
+                mediaPlayer?.start()
+                Toast.makeText(requireContext(), "Now Playing: $songName", Toast.LENGTH_LONG).show()
+            } catch (e: IOException) {
+                mediaPlayer = null
+                mediaPlayer?.release()
+            }
+    }
+
+    companion object {
+        var mediaPlayer : MediaPlayer? = null
+        @JvmStatic
+        fun newInstance() = RockFragment()
     }
 }
