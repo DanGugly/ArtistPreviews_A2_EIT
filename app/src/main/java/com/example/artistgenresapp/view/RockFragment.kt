@@ -58,13 +58,21 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
         return binding.root
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        dataLoaded = false
+    }
+
     override fun onResume() {
         super.onResume()
-        presenter.getRockSongsFromServer()
+        if (!dataLoaded){
+            presenter.getRockSongsFromServer()
+        }
     }
 
     override fun rockSongsUpdated(rockSongs: List<Result>) {
         rockAdapter.updateRock(rockSongs)
+        dataLoaded = true
         Toast.makeText(requireContext(), rockSongs[0].artistName, Toast.LENGTH_LONG).show()
         Log.d("CharactersFragment", rockSongs.toString())
     }
@@ -80,7 +88,7 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
         presenter.destroyPresenter()
     }
 
-    override fun previewSong(previewUrl: String, songName : String, mediaPlayer: MediaPlayer) {
+    override fun previewSong(previewUrl: String, songName : String) {
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
         intent.setDataAndType(Uri.parse(previewUrl), "audio/*")
@@ -88,8 +96,7 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
         startActivity(intent)
         /*
             try {
-                mediaPlayer.stop()
-                mediaPlayer.release()
+                var mediaPlayer = MediaPlayer()
                 mediaPlayer.apply {
                     setDataSource(previewUrl)
                     setAudioAttributes(AudioAttributes.Builder()
@@ -107,6 +114,7 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
     }
 
     companion object {
+        private var dataLoaded : Boolean = false
         @JvmStatic
         fun newInstance() = RockFragment()
     }

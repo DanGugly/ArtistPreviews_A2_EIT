@@ -41,7 +41,7 @@ class RockAdapter(
         holder.collectionName.text = song.collectionName
         getWeatherIcon(song.artworkUrl60, holder.artwork)
         holder.itemView.setOnClickListener{
-            previewClick.previewSong(song.previewUrl,song.trackName, mediaPlayer)
+            previewClick.previewSong(song.previewUrl,song.trackName)
         }
     }
 
@@ -55,10 +55,6 @@ class RockAdapter(
     }
 
     override fun getItemCount(): Int = rockList.size
-
-    companion object{
-        var mediaPlayer : MediaPlayer = MediaPlayer()
-    }
 
 }
 
