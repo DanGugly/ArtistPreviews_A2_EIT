@@ -1,8 +1,6 @@
 package com.example.artistgenresapp.view
 
 import android.content.Context
-import android.media.AudioAttributes
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,7 +16,6 @@ import com.example.artistgenresapp.databinding.FragmentRockBinding
 import com.example.artistgenresapp.model.Result
 import com.example.artistgenresapp.presenter.IRockPresenter
 import com.example.artistgenresapp.presenter.IRockView
-import java.io.IOException
 import javax.inject.Inject
 import android.content.Intent
 import android.net.Uri
@@ -73,7 +70,7 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
     override fun rockSongsUpdated(rockSongs: List<Result>) {
         rockAdapter.updateRock(rockSongs)
         dataLoaded = true
-        Toast.makeText(requireContext(), rockSongs[0].artistName, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), "Results: "+(rockSongs.size+1).toString(), Toast.LENGTH_LONG).show()
         Log.d("CharactersFragment", rockSongs.toString())
     }
 
