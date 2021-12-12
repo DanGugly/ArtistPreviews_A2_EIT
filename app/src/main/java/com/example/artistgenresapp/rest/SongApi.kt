@@ -12,7 +12,7 @@ interface SongApi {
         @Query("term") genre : String,
         @Query("amp;media") media : String = SONG_MEDIA,
         @Query("amp;entity") entity : String = SONG_ENTITY,
-        @Query("amp;limit") limit : String = SONG_LIMIT,
+        @Query("amp;limit") limit : String = SONG_LIMIT
 
     ) : Single<Song>
 
