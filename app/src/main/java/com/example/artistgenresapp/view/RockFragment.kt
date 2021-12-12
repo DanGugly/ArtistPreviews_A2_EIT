@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.artistgenresapp.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.artistgenresapp.SongsApplication
+import com.example.artistgenresapp.adapter.RockAdapter
+import com.example.artistgenresapp.databinding.FragmentRockBinding
 import com.example.artistgenresapp.model.Result
 import com.example.artistgenresapp.presenter.IRockPresenter
 import com.example.artistgenresapp.presenter.IRockView
@@ -19,6 +21,9 @@ class RockFragment : Fragment(), IRockView {
 
     @Inject
     lateinit var presenter: IRockPresenter
+
+    private lateinit var binding: FragmentRockBinding
+    private var rockAdapter = RockAdapter()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,8 +41,14 @@ class RockFragment : Fragment(), IRockView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rock, container, false)
+        binding = FragmentRockBinding.inflate(inflater, container, false)
+        binding.rockRecycler.apply{
+            // adding the layout manager
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            // setting the adapter
+            adapter = rockAdapter
+        }
+        return binding.root
     }
 
     override fun onResume() {
@@ -51,6 +62,7 @@ class RockFragment : Fragment(), IRockView {
     }
 
     override fun rockSongsUpdated(rock_songs: List<Result>) {
+        rockAdapter.updateRock(rock_songs)
         Toast.makeText(requireContext(), rock_songs[0].artistName, Toast.LENGTH_LONG).show()
         Log.d("CharactersFragment", rock_songs.toString())
     }
