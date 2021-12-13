@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.artistgenresapp.SongsApplication
 import com.example.artistgenresapp.adapter.PreviewClick
 import com.example.artistgenresapp.adapter.RockAdapter
-import com.example.artistgenresapp.databinding.FragmentRockBinding
 import com.example.artistgenresapp.model.Result
 import com.example.artistgenresapp.presenter.IRockPresenter
 import com.example.artistgenresapp.presenter.IRockView
 import javax.inject.Inject
 import android.content.Intent
 import android.net.Uri
+import com.example.artistgenresapp.databinding.FragmentSongsBinding
 
 
 class RockFragment : Fragment(), IRockView, PreviewClick {
@@ -26,7 +26,7 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
     @Inject
     lateinit var presenter: IRockPresenter
 
-    private lateinit var binding: FragmentRockBinding
+    private lateinit var binding: FragmentSongsBinding
     private var rockAdapter = RockAdapter(this)
 
     override fun onAttach(context: Context) {
@@ -45,8 +45,8 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentRockBinding.inflate(inflater, container, false)
-        binding.rockRecycler.apply{
+        binding = FragmentSongsBinding.inflate(inflater, container, false)
+        binding.songRecycler.apply{
             // adding the layout manager
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             // setting the adapter

@@ -67,7 +67,7 @@ class ClassicPresenter @Inject constructor(
             .subscribe(
                 {
                     classicViewContract?.classicSongsUpdated(it)
-                    Log.d("PRESENTER", "Classic list retrieved")
+                    Log.d("PRESENTER", "Classic list retrieved $it")
                 },
                 { Log.e("PRESENTER", it.localizedMessage)}
             )

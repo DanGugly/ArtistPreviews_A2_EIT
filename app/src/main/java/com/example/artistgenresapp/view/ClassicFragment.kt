@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.artistgenresapp.SongsApplication
 import com.example.artistgenresapp.adapter.ClassicAdapter
 import com.example.artistgenresapp.adapter.PreviewClick
-import com.example.artistgenresapp.databinding.FragmentClassicBinding
+import com.example.artistgenresapp.databinding.FragmentSongsBinding
 import com.example.artistgenresapp.model.Result
 import com.example.artistgenresapp.presenter.IClassicPresenter
 import com.example.artistgenresapp.presenter.IClassicView
@@ -25,7 +25,7 @@ class ClassicFragment : Fragment(), IClassicView, PreviewClick {
     @Inject
     lateinit var presenter: IClassicPresenter
 
-    private lateinit var binding: FragmentClassicBinding
+    private lateinit var binding: FragmentSongsBinding
     private var classicAdapter = ClassicAdapter(this)
 
     override fun onAttach(context: Context) {
@@ -55,8 +55,8 @@ class ClassicFragment : Fragment(), IClassicView, PreviewClick {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentClassicBinding.inflate(inflater, container, false)
-        binding.classicRecycler.apply {
+        binding = FragmentSongsBinding.inflate(inflater, container, false)
+        binding.songRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = classicAdapter
         }

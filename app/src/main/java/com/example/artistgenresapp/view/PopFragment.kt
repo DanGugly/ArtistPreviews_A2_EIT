@@ -11,11 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.artistgenresapp.R
 import com.example.artistgenresapp.SongsApplication
 import com.example.artistgenresapp.adapter.PopAdapter
 import com.example.artistgenresapp.adapter.PreviewClick
-import com.example.artistgenresapp.databinding.FragmentPopBinding
+import com.example.artistgenresapp.databinding.FragmentSongsBinding
 import com.example.artistgenresapp.model.Result
 import com.example.artistgenresapp.presenter.IPopPresenter
 import com.example.artistgenresapp.presenter.IPopView
@@ -25,7 +24,7 @@ class PopFragment : Fragment(), IPopView, PreviewClick {
 
     @Inject
     lateinit var presenter: IPopPresenter
-    private lateinit var binding: FragmentPopBinding
+    private lateinit var binding: FragmentSongsBinding
     private var popAdapter = PopAdapter(this)
 
     override fun onAttach(context: Context) {
@@ -55,8 +54,8 @@ class PopFragment : Fragment(), IPopView, PreviewClick {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPopBinding.inflate(inflater, container, false)
-        binding.popRecycler.apply {
+        binding = FragmentSongsBinding.inflate(inflater, container, false)
+        binding.songRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = popAdapter
         }
