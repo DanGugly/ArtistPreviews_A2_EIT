@@ -2,6 +2,8 @@ package com.example.artistgenresapp.presenter
 
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
+import com.example.artistgenresapp.database.ResultDatabase
 import com.example.artistgenresapp.model.Result
 import com.example.artistgenresapp.rest.SongApi
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,7 +13,8 @@ import javax.inject.Inject
 
 class PopPresenter @Inject constructor(
     var networkApi: SongApi,
-    var connectivityManager: ConnectivityManager
+    var connectivityManager: ConnectivityManager,
+    var resultDatabase: ResultDatabase
 ) : IPopPresenter {
 
     private var popViewContract: IPopView? = null
@@ -36,10 +39,40 @@ class PopPresenter @Inject constructor(
                     },
                     {   throwable ->
                         popViewContract?.onErrorData(throwable)
+                        popViewContract?.onErrorNetwork()
                     }
                 )
             disposable.add(musicDisposable)
+        } else{
+            popViewContract?.onErrorNetwork()
         }
+    }
+
+    override fun saveResultsToDB(result: List<Result>) {
+        val databaseDisposable = resultDatabase
+            .getResultDao()
+            .insertAll(result)
+            .subscribeOn(Schedulers.io())
+            .subscribe(
+                { Log.d("PRESENTER", "Pop list saved") },
+                { Log.e("PRESENTER", it.localizedMessage)}
+            )
+        disposable.add(databaseDisposable)
+    }
+
+    override fun getLocalData(){
+        val databaseDisposable = resultDatabase
+            .getResultDao()
+            .getPopMusic()
+            .subscribeOn(Schedulers.io())
+            .subscribe(
+                {
+                    popViewContract?.popSongsUpdated(it)
+                    Log.d("PRESENTER", "Pop list retrieved")
+                },
+                { Log.e("PRESENTER", it.localizedMessage)}
+            )
+        disposable.add(databaseDisposable)
     }
 
     override fun checkNetworkState() {
@@ -69,12 +102,18 @@ interface IPopPresenter{
 
     fun getPopSongsFromServer()
 
+    fun saveResultsToDB(result: List<Result>)
+
+    fun getLocalData()
+
     fun checkNetworkState()
 
     fun destroyPresenter()
 }
 
 interface IPopView{
+
+    fun onErrorNetwork()
 
     fun popSongsUpdated(popSongs: List<Result>)
 

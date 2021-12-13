@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.artistgenresapp.R
 import com.example.artistgenresapp.SongsApplication
 import com.example.artistgenresapp.adapter.ClassicAdapter
 import com.example.artistgenresapp.adapter.PreviewClick
@@ -69,7 +68,7 @@ class ClassicFragment : Fragment(), IClassicView, PreviewClick {
         presenter.destroyPresenter()
     }
 
-    override fun previewSong(previewUrl: String, songName: String) {
+    override fun previewSong(previewUrl: String?, songName: String?) {
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
         intent.setDataAndType(Uri.parse(previewUrl), "audio/*")
@@ -79,9 +78,14 @@ class ClassicFragment : Fragment(), IClassicView, PreviewClick {
 
     override fun classicSongsUpdated(classicSongs: List<Result>) {
         classicAdapter.updateClassic(classicSongs)
+        presenter.saveResultsToDB(classicSongs)
         dataLoaded = true
         Toast.makeText(requireContext(), "Results: "+(classicSongs.size).toString(), Toast.LENGTH_LONG).show()
         Log.d("ClassicFragment", classicSongs.toString())
+    }
+
+    override fun onErrorNetwork(){
+        presenter.getLocalData()
     }
 
     override fun onErrorData(error: Throwable) {

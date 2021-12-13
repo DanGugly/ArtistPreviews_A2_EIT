@@ -1,6 +1,8 @@
 package com.example.artistgenresapp.presenter
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
+import com.example.artistgenresapp.database.ResultDatabase
 import com.example.artistgenresapp.model.Result
 import com.example.artistgenresapp.rest.SongApi
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -10,7 +12,8 @@ import javax.inject.Inject
 
 class ClassicPresenter @Inject constructor(
     var networkApi: SongApi,
-    var connectivityManager: ConnectivityManager
+    var connectivityManager: ConnectivityManager,
+    var resultDatabase: ResultDatabase
 ) : IClassicPresenter {
 
     private var classicViewContract: IClassicView? = null
@@ -34,11 +37,41 @@ class ClassicPresenter @Inject constructor(
                         classicViewContract?.classicSongsUpdated(classicSongs.results)
                     },
                     {   throwable ->
+                        classicViewContract?.onErrorNetwork()
                         classicViewContract?.onErrorData(throwable)
                     }
                 )
             disposable.add(musicDisposable)
+        } else{
+            classicViewContract?.onErrorNetwork()
         }
+    }
+
+    override fun saveResultsToDB(result: List<Result>) {
+        val databaseDisposable = resultDatabase
+            .getResultDao()
+            .insertAll(result)
+            .subscribeOn(Schedulers.io())
+            .subscribe(
+                { Log.d("PRESENTER", "Classic list saved") },
+                { Log.e("PRESENTER", it.localizedMessage)}
+            )
+        disposable.add(databaseDisposable)
+    }
+
+    override fun getLocalData() {
+        val databaseDisposable = resultDatabase
+            .getResultDao()
+            .getAll()
+            .subscribeOn(Schedulers.io())
+            .subscribe(
+                {
+                    classicViewContract?.classicSongsUpdated(it)
+                    Log.d("PRESENTER", "Classic list retrieved")
+                },
+                { Log.e("PRESENTER", it.localizedMessage)}
+            )
+        disposable.add(databaseDisposable)
     }
 
     override fun checkNetworkState() {
@@ -68,12 +101,18 @@ interface IClassicPresenter{
 
     fun getClassicSongsFromServer()
 
+    fun saveResultsToDB(result: List<Result>)
+
+    fun getLocalData()
+
     fun checkNetworkState()
 
     fun destroyPresenter()
 }
 
 interface IClassicView{
+
+    fun onErrorNetwork()
 
     fun classicSongsUpdated(classicSongs: List<Result>)
 

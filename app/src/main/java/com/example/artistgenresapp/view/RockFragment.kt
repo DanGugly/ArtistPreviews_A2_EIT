@@ -67,8 +67,13 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
         }
     }
 
+    override fun onErrorNetwork() {
+        presenter.getLocalData()
+    }
+
     override fun rockSongsUpdated(rockSongs: List<Result>) {
         rockAdapter.updateRock(rockSongs)
+        presenter.saveResultsToDB(rockSongs)
         dataLoaded = true
         Toast.makeText(requireContext(), "Results: "+(rockSongs.size).toString(), Toast.LENGTH_LONG).show()
         Log.d("RockFragment", rockSongs.toString())
@@ -85,7 +90,7 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
         presenter.destroyPresenter()
     }
 
-    override fun previewSong(previewUrl: String, songName : String) {
+    override fun previewSong(previewUrl: String?, songName : String?) {
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
         intent.setDataAndType(Uri.parse(previewUrl), "audio/*")

@@ -68,7 +68,7 @@ class PopFragment : Fragment(), IPopView, PreviewClick {
         presenter.destroyPresenter()
     }
 
-    override fun previewSong(previewUrl: String, songName: String) {
+    override fun previewSong(previewUrl: String?, songName: String?) {
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
         intent.setDataAndType(Uri.parse(previewUrl), "audio/*")
@@ -76,8 +76,13 @@ class PopFragment : Fragment(), IPopView, PreviewClick {
         startActivity(intent)
     }
 
+    override fun onErrorNetwork() {
+        presenter.getLocalData()
+    }
+
     override fun popSongsUpdated(popSongs: List<Result>) {
         popAdapter.updatePop(popSongs)
+        presenter.saveResultsToDB(popSongs)
         dataLoaded = true
         Toast.makeText(requireContext(), "Results: "+(popSongs.size).toString(), Toast.LENGTH_LONG).show()
         Log.d("PopFragment", popSongs.toString())

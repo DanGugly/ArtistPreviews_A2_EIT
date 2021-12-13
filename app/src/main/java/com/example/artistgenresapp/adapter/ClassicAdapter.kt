@@ -41,7 +41,7 @@ class ClassicAdapter(
         }
     }
 
-    private fun getWeatherIcon(path:String, artwork: ImageView){
+    private fun getWeatherIcon(path:String?, artwork: ImageView){
         Picasso
             .get()
             .load(path)
