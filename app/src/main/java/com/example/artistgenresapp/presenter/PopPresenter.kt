@@ -62,7 +62,6 @@ class PopPresenter @Inject constructor(
     }
 
     override fun getLocalData(){
-        if(!isNetworkAvailable) {
             val databaseDisposable = resultDatabase
                 .getResultDao()
                 .getPopMusic()
@@ -79,7 +78,6 @@ class PopPresenter @Inject constructor(
                     { Log.e("PRESENTER", it.localizedMessage) }
                 )
             disposable.add(databaseDisposable)
-        }
     }
 
     override fun checkNetworkState() {
