@@ -52,6 +52,11 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
             // setting the adapter
             adapter = rockAdapter
         }
+        binding.swipe.setOnRefreshListener {
+            Toast.makeText(requireContext(),"Refreshing..",Toast.LENGTH_SHORT).show()
+            presenter.getRockSongsFromServer()
+            binding.swipe.isRefreshing = false
+        }
         return binding.root
     }
 

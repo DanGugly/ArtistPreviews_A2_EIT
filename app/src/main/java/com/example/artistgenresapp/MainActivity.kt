@@ -45,17 +45,4 @@ class MainActivity : AppCompatActivity(){
         }.attach()
     }
 
-    override fun onResume() {
-        super.onResume()
-        /*
-        swipeRefreshLayout = binding.swipe
-        swipeRefreshLayout.setOnRefreshListener {
-            // Do API fetch for all genres
-            Toast.makeText(this,"Refreshing..",Toast.LENGTH_LONG).show()
-            Handler().postDelayed(Runnable {
-                swipeRefreshLayout.isRefreshing = false
-            }, 4000)
-        }
-         */
-    }
 }

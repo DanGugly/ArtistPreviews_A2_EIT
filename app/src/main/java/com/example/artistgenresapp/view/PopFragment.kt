@@ -59,6 +59,12 @@ class PopFragment : Fragment(), IPopView, PreviewClick {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = popAdapter
         }
+
+        binding.swipe.setOnRefreshListener {
+            Toast.makeText(requireContext(),"Refreshing..",Toast.LENGTH_LONG).show()
+            presenter.getPopSongsFromServer()
+            binding.swipe.isRefreshing = false
+        }
         return binding.root
     }
 
@@ -71,7 +77,7 @@ class PopFragment : Fragment(), IPopView, PreviewClick {
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
         intent.setDataAndType(Uri.parse(previewUrl), "audio/*")
-        Toast.makeText(requireContext(), "Now Playing: $songName", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), "Now Playing: $songName", Toast.LENGTH_SHORT).show()
         startActivity(intent)
     }
 
