@@ -65,13 +65,10 @@ class ClassicPresenter @Inject constructor(
             .getResultDao()
             .getAll()
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    try{
                     classicViewContract?.classicSongsUpdated(it)
-                    }catch (e: Exception){
-                        e.printStackTrace()
-                    }
                     Log.d("PRESENTER", "Classic list retrieved $it")
                 },
                 { Log.e("PRESENTER", it.localizedMessage)}

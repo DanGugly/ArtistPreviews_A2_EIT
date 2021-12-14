@@ -66,13 +66,10 @@ class RockPresenter @Inject constructor(
                 .getResultDao()
                 .getRockMusic()
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        try {
                         rockViewContract?.rockSongsUpdated(it)
-                        }catch (e:Exception){
-                            e.printStackTrace()
-                         }
                         Log.d("PRESENTER", "Rock list retrieved")
                     },
                     { Log.e("PRESENTER", it.localizedMessage)}

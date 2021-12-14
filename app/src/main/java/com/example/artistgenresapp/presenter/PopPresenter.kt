@@ -66,13 +66,10 @@ class PopPresenter @Inject constructor(
                 .getResultDao()
                 .getPopMusic()
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        try{
                             popViewContract?.popSongsUpdated(it)
-                        }catch (e: Exception){
-                            e.printStackTrace()
-                        }
                         Log.d("PRESENTER", "Pop list retrieved")
                     },
                     { Log.e("PRESENTER", it.localizedMessage) }
