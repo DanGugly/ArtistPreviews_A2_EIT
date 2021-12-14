@@ -8,6 +8,7 @@ import com.example.artistgenresapp.rest.SongApi
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.lang.Exception
 import javax.inject.Inject
 
 class ClassicPresenter @Inject constructor(
@@ -66,7 +67,11 @@ class ClassicPresenter @Inject constructor(
             .subscribeOn(Schedulers.io())
             .subscribe(
                 {
+                    try{
                     classicViewContract?.classicSongsUpdated(it)
+                    }catch (e: Exception){
+                        e.printStackTrace()
+                    }
                     Log.d("PRESENTER", "Classic list retrieved $it")
                 },
                 { Log.e("PRESENTER", it.localizedMessage)}

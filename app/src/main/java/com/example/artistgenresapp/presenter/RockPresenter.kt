@@ -9,6 +9,7 @@ import com.example.artistgenresapp.rest.SongApi
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.lang.Exception
 import javax.inject.Inject
 
 class RockPresenter @Inject constructor(
@@ -61,18 +62,22 @@ class RockPresenter @Inject constructor(
     }
 
     override fun getLocalData() {
-        val databaseDisposable = resultDatabase
-            .getResultDao()
-            .getRockMusic()
-            .subscribeOn(Schedulers.io())
-            .subscribe(
-                {
-                    rockViewContract?.rockSongsUpdated(it)
-                    Log.d("PRESENTER", "Rock list retrieved")
-                },
-                { Log.e("PRESENTER", it.localizedMessage)}
-            )
-        disposable.add(databaseDisposable)
+            val databaseDisposable = resultDatabase
+                .getResultDao()
+                .getRockMusic()
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                    {
+                        try {
+                        rockViewContract?.rockSongsUpdated(it)
+                        }catch (e:Exception){
+                            e.printStackTrace()
+                         }
+                        Log.d("PRESENTER", "Rock list retrieved")
+                    },
+                    { Log.e("PRESENTER", it.localizedMessage)}
+                )
+            disposable.add(databaseDisposable)
     }
 
     override fun checkNetworkState() {

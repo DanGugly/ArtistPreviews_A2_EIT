@@ -9,6 +9,7 @@ import com.example.artistgenresapp.rest.SongApi
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.lang.Exception
 import javax.inject.Inject
 
 class PopPresenter @Inject constructor(
@@ -61,18 +62,24 @@ class PopPresenter @Inject constructor(
     }
 
     override fun getLocalData(){
-        val databaseDisposable = resultDatabase
-            .getResultDao()
-            .getPopMusic()
-            .subscribeOn(Schedulers.io())
-            .subscribe(
-                {
-                    popViewContract?.popSongsUpdated(it)
-                    Log.d("PRESENTER", "Pop list retrieved")
-                },
-                { Log.e("PRESENTER", it.localizedMessage)}
-            )
-        disposable.add(databaseDisposable)
+        if(!isNetworkAvailable) {
+            val databaseDisposable = resultDatabase
+                .getResultDao()
+                .getPopMusic()
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                    {
+                        try{
+                            popViewContract?.popSongsUpdated(it)
+                        }catch (e: Exception){
+                            e.printStackTrace()
+                        }
+                        Log.d("PRESENTER", "Pop list retrieved")
+                    },
+                    { Log.e("PRESENTER", it.localizedMessage) }
+                )
+            disposable.add(databaseDisposable)
+        }
     }
 
     override fun checkNetworkState() {

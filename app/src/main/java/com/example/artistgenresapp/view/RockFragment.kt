@@ -101,23 +101,6 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
         intent.setDataAndType(Uri.parse(previewUrl), "audio/*")
         Toast.makeText(requireContext(), "Now Playing: $songName", Toast.LENGTH_LONG).show()
         startActivity(intent)
-        /*
-            try {
-                var mediaPlayer = MediaPlayer()
-                mediaPlayer.apply {
-                    setDataSource(previewUrl)
-                    setAudioAttributes(AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build()
-                    )
-                    prepare()
-                }
-                mediaPlayer.start()
-                Toast.makeText(requireContext(), "Now Playing: $songName", Toast.LENGTH_LONG).show()
-            } catch (e: IOException) {
-                mediaPlayer.release()
-            } */
     }
 
     companion object {
