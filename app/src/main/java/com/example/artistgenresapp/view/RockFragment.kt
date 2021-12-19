@@ -96,6 +96,9 @@ class RockFragment : Fragment(), IRockView, PreviewClick {
     }
 
     override fun previewSong(previewUrl: String?, songName : String?) {
+
+        // here you are using an intent to open an specific app to play the song...
+        // you ca use MediaPlayer() to allow your app play audio without the help of external app
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
         intent.setDataAndType(Uri.parse(previewUrl), "audio/*")

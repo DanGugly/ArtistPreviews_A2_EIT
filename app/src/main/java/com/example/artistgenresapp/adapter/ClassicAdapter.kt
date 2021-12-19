@@ -35,6 +35,10 @@ class ClassicAdapter(
         holder.artistName.text = song.artistName
         holder.trackPrice.text = song.trackPrice.toString()+" "+ song.currency
         holder.collectionName.text = song.collectionName
+
+        // here remember the SOLID principles (Single)
+
+        // we can move this logic to the view holder directly
         getWeatherIcon(song.artworkUrl60, holder.artwork)
         holder.itemView.setOnClickListener{
             previewClick.previewSong(song.previewUrl,song.trackName)
