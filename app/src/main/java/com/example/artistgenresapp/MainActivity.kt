@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(){
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // this adapter can be injected by Dagger
         binding.artistGenreContainer.adapter = FragmentAdapter(supportFragmentManager, lifecycle)
 
         TabLayoutMediator(binding.artistGenreMenu, binding.artistGenreContainer){ tab, position ->
